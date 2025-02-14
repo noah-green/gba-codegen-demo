@@ -1,0 +1,2 @@
+# walk cycle: 4bpp, not compressed. Map to 2x4 tile units
+-gB4 -Mw 2 -Mh 4

@@ -1,0 +1,36 @@
+// this code is generated, do not edit by hand
+
+#include "{{ animation.name }}_animation.h"
+
+void init_{{ animation.name }}_animation({{ animation.name |capitalize }}AnimationState * state, OBJ_ATTR * obj, int tile_offset)
+{
+    state->obj = obj;
+    state->tile_offset = tile_offset;
+    state->current_animation = DEFAULT;
+    state->timer = 0;
+}
+
+void update_{{ animation.name }}_animation({{ animation.name |capitalize }}AnimationState * state) 
+{
+    switch (state->current_animation)
+    {
+        {% for tag in animation.tags %}
+        case {{ tag.name |upper }}:
+            {% for frameTiming in tag.timing.frameTimings %}
+            if (state->timer % {{ tag.timing.totalFrames }} < {{ frameTiming.lastFrame }}) { state->obj->attr2 = ATTR2_PALBANK(0) | (state->tile_offset + {{ frameTiming.tid }}); break;}
+            {% endfor %}
+        {% endfor %}
+        default:
+            state->obj->attr2 = ATTR2_PALBANK(0) | state->tile_offset;
+    }
+    state->timer++;
+}
+
+{%for tag in animation.tags %}
+void start_{{ tag.name }}({{ animation.name |capitalize }}AnimationState * state)
+{
+    state->current_animation = {{ tag.name |upper }};
+    state->timer = 0;
+}
+
+{% endfor %}

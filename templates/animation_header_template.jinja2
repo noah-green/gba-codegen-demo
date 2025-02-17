@@ -1,0 +1,33 @@
+// this code is generated. do not edit by hand
+
+#ifndef {{ animation.name |upper }}_ANIMATION_H
+#define {{ animation.name |upper}}_ANIMATION_H
+
+#include <tonc.h>
+
+typedef enum 
+{
+    {% for tag in animation.tags %}
+    {{ tag.name |upper }},
+    {% endfor %}
+    DEFAULT // displays the sprite at tid 0
+} {{ animation.name |capitalize }}AnimationTags;
+
+typedef struct
+{
+    OBJ_ATTR *obj; // pointer to the sprite object in object memory
+	int tile_offset; // tile index where the sprite starts in tile memory
+	{{ animation.name |capitalize }}AnimationTags current_animation;
+	int timer; // number of frames the current animation has been playing
+} {{ animation.name |capitalize }}AnimationState;
+
+void init_{{ animation.name }}_animation({{ animation.name |capitalize }}AnimationState * state, OBJ_ATTR * obj, int tile_offset);
+
+void update_{{ animation.name }}_animation({{ animation.name |capitalize }}AnimationState * state);
+
+{%for tag in animation.tags %}
+void start_{{ tag.name }}({{ animation.name |capitalize }}AnimationState * state);
+
+{% endfor %}
+
+#endif // {{ animation.name |upper}}_ANIMATION_H

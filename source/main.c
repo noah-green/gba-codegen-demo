@@ -34,7 +34,8 @@ int main(void)
 	irq_enable(II_VBLANK);
 	OBJ_ATTR *sprite = load_sprite();
 
-	WalkcycleAnimationState state = { sprite, IDLEFRONT, 0 };
+	WalkcycleAnimationState state;
+	init_walkcycle_animation(&state, sprite, 0);
 	start_walkFront(&state);
 
 	sprite->attr2 = ATTR2_PALBANK(0) | 64;
